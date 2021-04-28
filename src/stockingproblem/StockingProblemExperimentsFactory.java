@@ -13,6 +13,7 @@ import java.util.Random;
 
 import statistics.StatisticBestAverage;
 import statistics.StatisticBestInRun;
+import utils.Mutations;
 
 public class StockingProblemExperimentsFactory extends ExperimentsFactory {
 
@@ -51,10 +52,10 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
             case "pmx":
                 recombination = new RecombinationPartialMapped<>(recombinationProbability);
                 break;
-            case "recombination2": //TODO
+            case "recombination2": //TODO Joel
                 recombination = new Recombination2<>(recombinationProbability);
                 break;
-            case "recombination3": //TODO
+            case "recombination3": //TODO Marc
                 recombination = new Recombination3<>(recombinationProbability);
                 break;
         }
@@ -62,14 +63,14 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
         //MUTATION
         double mutationProbability = Double.parseDouble(getParameterValue("Mutation probability"));
 
-        switch (getParameterValue("Mutation")) {
-            case "insert":
+        switch (Mutations.getByText(getParameterValue("Mutation"))) {
+            case INSERT:
                 mutation = new MutationInsert<>(mutationProbability);
                 break;
-            case "mutation2": //TODO
+            case GAUSSIAN_SELF_ADAPTIVE: //TODO Joel
                 mutation = new Mutation2<>(mutationProbability);
                 break;
-            case "mutation3": //TODO
+            case MUTATION_3: //TODO Marc
                 mutation = new Mutation3<>(mutationProbability);
                 break;
         }
