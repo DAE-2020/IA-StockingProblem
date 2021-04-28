@@ -2,6 +2,7 @@ package ga.geneticoperators;
 
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;
+import utils.Mutations;
 
 public class Mutation3<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
 
@@ -17,6 +18,6 @@ public class Mutation3<I extends IntVectorIndividual, P extends Problem<I>> exte
 
     @Override
     public String toString(){
-        return "TODO";
+        return Mutations.MUTATION_3.getText();
     }
 }

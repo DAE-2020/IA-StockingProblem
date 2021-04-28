@@ -3,6 +3,7 @@ package ga.geneticoperators;
 import ga.GeneticAlgorithm;
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;
+import utils.Mutations;
 
 public class MutationInsert<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
 
@@ -33,6 +34,6 @@ public class MutationInsert<I extends IntVectorIndividual, P extends Problem<I>>
 
     @Override
     public String toString() {
-        return "Insert";
+        return Mutations.INSERT.getText();
     }
 }

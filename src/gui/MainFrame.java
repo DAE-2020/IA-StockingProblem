@@ -544,7 +544,7 @@ class PanelParameters extends PanelAtributesValue {
             case 0:
                 return new MutationInsert<>(mutationProb);
             case 1:
-                return new Mutation2<>(mutationProb);
+                return new MutationGaussianSelfAdaptive<>(mutationProb);
             case 2:
                 return new Mutation3<>(mutationProb);
         }

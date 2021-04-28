@@ -2,10 +2,11 @@ package ga.geneticoperators;
 
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;
+import utils.Mutations;
 
-public class Mutation2<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
+public class MutationGaussianSelfAdaptive<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
 
-    public Mutation2(double probability) {
+    public MutationGaussianSelfAdaptive(double probability) {
         super(probability);
     }
 
@@ -17,6 +18,6 @@ public class Mutation2<I extends IntVectorIndividual, P extends Problem<I>> exte
 
     @Override
     public String toString(){
-        return "TODO";
+        return Mutations.GAUSSIAN_SELF_ADAPTIVE.getText();
     }
 }

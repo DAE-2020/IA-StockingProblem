@@ -68,7 +68,7 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
                 mutation = new MutationInsert<>(mutationProbability);
                 break;
             case GAUSSIAN_SELF_ADAPTIVE: //TODO Joel
-                mutation = new Mutation2<>(mutationProbability);
+                mutation = new MutationGaussianSelfAdaptive<>(mutationProbability);
                 break;
             case MUTATION_3: //TODO Marc
                 mutation = new Mutation3<>(mutationProbability);
