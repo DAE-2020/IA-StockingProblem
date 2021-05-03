@@ -19,8 +19,7 @@ public class StockingProblem implements Problem<StockingProblemIndividual> {
 
     @Override
     public StockingProblemIndividual getNewIndividual() {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return new StockingProblemIndividual(this, items.size());
     }
 
     public int getMaterialHeight() {
