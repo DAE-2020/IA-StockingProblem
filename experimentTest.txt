@@ -1,0 +1,38 @@
+Runs: 50
+
+Population_size: 100
+
+Max_generations: 100
+
+//--------------------------------
+
+Selection: roulette_wheel, tournament
+
+Tournament_size: 2, 3, 4
+
+//--------------------------------
+
+Recombination: RECOMBINATION_2
+
+Recombination_probability: 0.7
+
+//--------------------------------
+
+Mutation: GAUSSIAN_SELF_ADAPTIVE
+
+Mutation probability: 0.025
+
+//--------------------------------
+
+Probability_of_1s: 0.05
+
+Fitness_type: 0
+
+//--------------------------------
+
+Problem_file: ./DataSets/Problema1.txt
+
+//--------------------------------
+
+Statistic: BestIndividual
+Statistic: BestAverage

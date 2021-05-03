@@ -14,6 +14,7 @@ import java.util.Random;
 import statistics.StatisticBestAverage;
 import statistics.StatisticBestInRun;
 import utils.Mutations;
+import utils.Recombinations;
 
 public class StockingProblemExperimentsFactory extends ExperimentsFactory {
 
@@ -48,14 +49,14 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
         //RECOMBINATION
         double recombinationProbability = Double.parseDouble(getParameterValue("Recombination_probability"));
 
-        switch (getParameterValue("Recombination")) {
-            case "pmx":
+        switch (Recombinations.getByText(getParameterValue("Recombination"))) {
+            case PMX:
                 recombination = new RecombinationPartialMapped<>(recombinationProbability);
                 break;
-            case "recombination2": //TODO Joel
+            case RECOMBINATION_2: //TODO Joel
                 recombination = new Recombination2<>(recombinationProbability);
                 break;
-            case "recombination3": //TODO Marc
+            case RECOMBINATION_3: //TODO Marc
                 recombination = new Recombination3<>(recombinationProbability);
                 break;
         }

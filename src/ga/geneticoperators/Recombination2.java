@@ -2,6 +2,7 @@ package ga.geneticoperators;
 
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;
+import utils.Recombinations;
 
 public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
@@ -17,6 +18,6 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
 
     @Override
     public String toString() {
-        return "TODO";
+        return Recombinations.RECOMBINATION_2.getText();
     }
 }

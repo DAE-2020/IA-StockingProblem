@@ -3,6 +3,8 @@ package ga.geneticoperators;
 import ga.GeneticAlgorithm;
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;
+import utils.Mutations;
+import utils.Recombinations;
 
 public class RecombinationPartialMapped<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
@@ -115,6 +117,6 @@ public class RecombinationPartialMapped<I extends IntVectorIndividual, P extends
 
     @Override
     public String toString() {
-        return "PMX";
+        return Recombinations.PMX.getText();
     }
 }

@@ -27,6 +27,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import utils.Mutations;
+import utils.Recombinations;
 
 public class MainFrame extends JFrame implements AlgorithmListener {
 
@@ -449,7 +450,7 @@ class PanelParameters extends PanelAtributesValue {
     String[] selectionMethods = {"Tournament", "Roulette wheel"};
     JComboBox jComboBoxSelectionMethods = new JComboBox(selectionMethods);
     JTextField jTextFieldTournamentSize = new JTextField(TOURNAMENT_SIZE, TEXT_FIELD_LENGHT);
-    String[] recombinationMethods = {"PMX", "Recombination 2", "Recombination 3"};
+    String[] recombinationMethods = {Recombinations.PMX.getText(), Recombinations.RECOMBINATION_2.getText(), Recombinations.RECOMBINATION_3.getText()};
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
     String[] mutationMethods = {Mutations.INSERT.getText(), Mutations.GAUSSIAN_SELF_ADAPTIVE.getText(), Mutations.MUTATION_3.getText()};
