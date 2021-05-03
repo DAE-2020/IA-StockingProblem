@@ -1,14 +1,24 @@
 package stockingproblem;
 
 import algorithms.IntVectorIndividual;
+import ga.GeneticAlgorithm;
+
+import java.util.ArrayList;
 
 public class StockingProblemIndividual extends IntVectorIndividual<StockingProblem, StockingProblemIndividual> {
     //TODO this class might require the definition of additional methods and/or attributes
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         super(problem, size);
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet.");
+        ArrayList<Integer> aux = new ArrayList<>();
+        for (int i = 1; i <= size; i++) {
+            aux.add(i);
+        }
+        for (int i = 0; i < size; i++) {
+            int rand = GeneticAlgorithm.random.nextInt(aux.size());
+            genome[i] = aux.get(rand);
+            aux.remove(rand);
+        }
     }
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
@@ -20,6 +30,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     @Override
     public double computeFitness() {
         //TODO
+
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
