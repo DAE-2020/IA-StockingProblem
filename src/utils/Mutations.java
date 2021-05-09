@@ -2,7 +2,7 @@ package utils;
 
 public enum Mutations {
     INSERT("Insert"),
-    GAUSSIAN_SELF_ADAPTIVE("Self Adaptive Gaussian"),
+    INVERSION("Inversion"),
     MUTATION_3("Mutation 3");
 
     private final String text;

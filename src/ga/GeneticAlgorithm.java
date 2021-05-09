@@ -2,7 +2,7 @@ package ga;
 
 
 import algorithms.*;
-import ga.geneticoperators.Mutation;
+import ga.geneticoperators.mutation.Mutation;
 import ga.geneticoperators.Recombination;
 import ga.selectionmethods.SelectionMethod;
 
@@ -35,6 +35,7 @@ public class GeneticAlgorithm<I extends Individual, P extends Problem<I>> extend
         t = 0;
         population = new Population<>(populationSize, problem);
         globalBest = population.evaluate();
+        //noinspection unchecked
         fireIterationEnded(new AlgorithmEvent(this));
 
         while (t < maxIterations && !stopped) {
@@ -45,14 +46,18 @@ public class GeneticAlgorithm<I extends Individual, P extends Problem<I>> extend
             I bestInGen = population.evaluate();
             computeBestInRun(bestInGen);
             t++;
+            //noinspection unchecked
             fireIterationEnded(new AlgorithmEvent(this));
         }
+        //noinspection unchecked
         fireRunEnded(new AlgorithmEvent(this));
         return globalBest;
     }
 
     private void computeBestInRun(I bestInGen) {
+        //noinspection unchecked
         if (bestInGen.compareTo(globalBest) > 0) {
+            //noinspection unchecked
             globalBest = (I) bestInGen.clone();
         }
     }
@@ -64,13 +69,11 @@ public class GeneticAlgorithm<I extends Individual, P extends Problem<I>> extend
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Population size:" + populationSize + "\n");
-        sb.append("Max generations:" + maxIterations + "\n");
-        sb.append("Selection:" + selection + "\n");
-        sb.append("Recombination:" + recombination + "\n");
-        sb.append("Mutation:" + mutation + "\n");
-        return sb.toString();
+        return "Population size:" + populationSize + "\n" +
+                "Max generations:" + maxIterations + "\n" +
+                "Selection:" + selection + "\n" +
+                "Recombination:" + recombination + "\n" +
+                "Mutation:" + mutation + "\n";
     }
 
 }

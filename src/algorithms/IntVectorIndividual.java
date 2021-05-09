@@ -54,6 +54,17 @@ public abstract class IntVectorIndividual<P extends Problem, I extends IntVector
         other.genome[index] = aux;
     }
 
+    public void invertGenes(int start, int end) {
+        int length = (end - start) + 1;
+        int middle = Math.floorDiv(length, 2);
+        int aux;
+        for (int i = 0; i < middle; i++) {
+            aux = genome[start + i];
+            genome[start + i] = genome[end - i];
+            genome[end - i] = aux;
+        }
+    }
+
     public int[] getGenome() {
         return genome;
     }
