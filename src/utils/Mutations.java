@@ -3,7 +3,7 @@ package utils;
 public enum Mutations {
     INSERT("Insert"),
     INVERSION("Inversion"),
-    MUTATION_3("Mutation 3");
+    SWAP("Swap");
 
     private final String text;
 

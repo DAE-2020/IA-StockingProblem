@@ -4,9 +4,9 @@ import algorithms.IntVectorIndividual;
 import algorithms.Problem;
 import utils.Mutations;
 
-public class Mutation3<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
+public class MutationSwap<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
 
-    public Mutation3(double probability) {
+    public MutationSwap(double probability) {
         super(probability);
     }
 
@@ -18,6 +18,6 @@ public class Mutation3<I extends IntVectorIndividual, P extends Problem<I>> exte
 
     @Override
     public String toString(){
-        return Mutations.MUTATION_3.getText();
+        return Mutations.SWAP.getText();
     }
 }

@@ -6,7 +6,7 @@ import experiments.ExperimentEvent;
 import ga.GeneticAlgorithm;
 import ga.geneticoperators.*;
 import ga.geneticoperators.mutation.Mutation;
-import ga.geneticoperators.mutation.Mutation3;
+import ga.geneticoperators.mutation.MutationSwap;
 import ga.geneticoperators.mutation.MutationInversion;
 import ga.geneticoperators.mutation.MutationInsert;
 import ga.selectionmethods.*;
@@ -456,7 +456,7 @@ class PanelParameters extends PanelAtributesValue {
     @SuppressWarnings("unchecked")
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
-    String[] mutationMethods = {Mutations.INSERT.getText(), Mutations.INVERSION.getText(), Mutations.MUTATION_3.getText()};
+    String[] mutationMethods = {Mutations.INSERT.getText(), Mutations.INVERSION.getText(), Mutations.SWAP.getText()};
     @SuppressWarnings("unchecked")
     JComboBox jComboBoxMutationMethods = new JComboBox(mutationMethods);
     JTextField jTextFieldProbMutation = new JTextField(PROB_MUTATION, TEXT_FIELD_LENGHT);
@@ -544,7 +544,7 @@ class PanelParameters extends PanelAtributesValue {
         return switch (jComboBoxMutationMethods.getSelectedIndex()) {
             case 0 -> new MutationInsert<>(mutationProb);
             case 1 -> new MutationInversion<>(mutationProb);
-            case 2 -> new Mutation3<>(mutationProb);
+            case 2 -> new MutationSwap<>(mutationProb);
             default -> null;
         };
     }

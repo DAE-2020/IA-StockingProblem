@@ -5,7 +5,7 @@ import algorithms.AlgorithmListener;
 import ga.GeneticAlgorithm;
 import ga.geneticoperators.*;
 import ga.geneticoperators.mutation.Mutation;
-import ga.geneticoperators.mutation.Mutation3;
+import ga.geneticoperators.mutation.MutationSwap;
 import ga.geneticoperators.mutation.MutationInversion;
 import ga.geneticoperators.mutation.MutationInsert;
 import ga.selectionmethods.*;
@@ -64,7 +64,7 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
         switch (Mutations.getByText(getParameterValue("Mutation"))) {
             case INSERT -> mutation = new MutationInsert<>(mutationProbability);
             case INVERSION -> mutation = new MutationInversion<>(mutationProbability);
-            case MUTATION_3 -> mutation = new Mutation3<>(mutationProbability);
+            case SWAP -> mutation = new MutationSwap<>(mutationProbability);
         }
 
         //PROBLEM
