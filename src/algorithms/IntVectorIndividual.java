@@ -65,6 +65,12 @@ public abstract class IntVectorIndividual<P extends Problem, I extends IntVector
         }
     }
 
+    public void switchGenes(int firstIndex, int secondIndex) {
+        int aux = genome[firstIndex];
+        genome[firstIndex] = genome[secondIndex];
+        genome[secondIndex] = aux;
+    }
+
     public int[] getGenome() {
         return genome;
     }
