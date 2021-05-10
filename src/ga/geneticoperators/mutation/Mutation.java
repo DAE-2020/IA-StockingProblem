@@ -1,12 +1,13 @@
-package ga.geneticoperators;
+package ga.geneticoperators.mutation;
 
 import algorithms.Individual;
 import ga.Population;
 import algorithms.Problem;
+import ga.geneticoperators.GeneticOperator;
 
 import static ga.GeneticAlgorithm.random;
 
-public abstract class Mutation <I extends Individual, P extends Problem<I>> extends GeneticOperator{
+public abstract class Mutation <I extends Individual, P extends Problem<I>> extends GeneticOperator {
     
     public Mutation(double probability){
         super(probability);

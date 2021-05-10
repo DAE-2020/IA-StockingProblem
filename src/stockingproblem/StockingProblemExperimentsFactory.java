@@ -4,6 +4,10 @@ import experiments.*;
 import algorithms.AlgorithmListener;
 import ga.GeneticAlgorithm;
 import ga.geneticoperators.*;
+import ga.geneticoperators.mutation.Mutation;
+import ga.geneticoperators.mutation.Mutation3;
+import ga.geneticoperators.mutation.MutationInversion;
+import ga.geneticoperators.mutation.MutationInsert;
 import ga.selectionmethods.*;
 
 import java.io.File;
@@ -38,42 +42,29 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
 
         //SELECTION
         switch (getParameterValue("Selection")) {
-            case "tournament":
+            case "tournament" -> {
                 int tournamentSize = Integer.parseInt(getParameterValue("Tournament_size"));
                 selection = new Tournament<>(populationSize, tournamentSize);
-                break;
-            case "roulette_wheel":
-                selection = new RouletteWheel<>(populationSize);
+            }
+            case "roulette_wheel" -> selection = new RouletteWheel<>(populationSize);
         }
 
         //RECOMBINATION
         double recombinationProbability = Double.parseDouble(getParameterValue("Recombination_probability"));
 
         switch (Recombinations.getByText(getParameterValue("Recombination"))) {
-            case PMX:
-                recombination = new RecombinationPartialMapped<>(recombinationProbability);
-                break;
-            case RECOMBINATION_2: //TODO Joel
-                recombination = new Recombination2<>(recombinationProbability);
-                break;
-            case RECOMBINATION_3: //TODO Marc
-                recombination = new Recombination3<>(recombinationProbability);
-                break;
+            case PMX -> recombination = new RecombinationPartialMapped<>(recombinationProbability);
+            case RECOMBINATION_2 -> recombination = new Recombination2<>(recombinationProbability);
+            case RECOMBINATION_3 -> recombination = new Recombination3<>(recombinationProbability);
         }
 
         //MUTATION
         double mutationProbability = Double.parseDouble(getParameterValue("Mutation probability"));
 
         switch (Mutations.getByText(getParameterValue("Mutation"))) {
-            case INSERT:
-                mutation = new MutationInsert<>(mutationProbability);
-                break;
-            case GAUSSIAN_SELF_ADAPTIVE: //TODO Joel
-                mutation = new MutationGaussianSelfAdaptive<>(mutationProbability);
-                break;
-            case MUTATION_3: //TODO Marc
-                mutation = new Mutation3<>(mutationProbability);
-                break;
+            case INSERT -> mutation = new MutationInsert<>(mutationProbability);
+            case INVERSION -> mutation = new MutationInversion<>(mutationProbability);
+            case MUTATION_3 -> mutation = new Mutation3<>(mutationProbability);
         }
 
         //PROBLEM
@@ -134,38 +125,32 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
     }
 
     private String buildExperimentTextualRepresentation() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Population size:" + populationSize + "\r\n");
-        sb.append("Max generations:" + maxGenerations + "\r\n");
-        sb.append("Selection:" + selection + "\r\n");
-        sb.append("Recombination:" + recombination + "\r\n");
-        sb.append("Recombination prob.: " + recombination.getProbability() + "\r\n");
-        sb.append("Mutation:" + mutation + "\r\n");
-        sb.append("Mutation prob.: " + mutation.getProbability());
-        return sb.toString();
+        return "Population size:" + populationSize + "\r\n" +
+                "Max generations:" + maxGenerations + "\r\n" +
+                "Selection:" + selection + "\r\n" +
+                "Recombination:" + recombination + "\r\n" +
+                "Recombination prob.: " + recombination.getProbability() + "\r\n" +
+                "Mutation:" + mutation + "\r\n" +
+                "Mutation prob.: " + mutation.getProbability();
     }
 
     private String buildExperimentHeader() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Population size:" + "\t");
-        sb.append("Max generations:" + "\t");
-        sb.append("Selection:" + "\t");
-        sb.append("Recombination:" + "\t");
-        sb.append("Recombination prob.:" + "\t");
-        sb.append("Mutation:" + "\t");
-        sb.append("Mutation prob.:" + "\t");
-        return sb.toString();
+        return "Population size:" + "\t" +
+                "Max generations:" + "\t" +
+                "Selection:" + "\t" +
+                "Recombination:" + "\t" +
+                "Recombination prob.:" + "\t" +
+                "Mutation:" + "\t" +
+                "Mutation prob.:" + "\t";
     }
 
     private String buildExperimentValues() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(populationSize + "\t");
-        sb.append(maxGenerations + "\t");
-        sb.append(selection + "\t");
-        sb.append(recombination + "\t");
-        sb.append(recombination.getProbability() + "\t");
-        sb.append(mutation + "\t");
-        sb.append(mutation.getProbability() + "\t");
-        return sb.toString();
+        return populationSize + "\t" +
+                maxGenerations + "\t" +
+                selection + "\t" +
+                recombination + "\t" +
+                recombination.getProbability() + "\t" +
+                mutation + "\t" +
+                mutation.getProbability() + "\t";
     }
 }

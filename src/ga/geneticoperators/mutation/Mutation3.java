@@ -1,4 +1,4 @@
-package ga.geneticoperators;
+package ga.geneticoperators.mutation;
 
 import algorithms.IntVectorIndividual;
 import algorithms.Problem;

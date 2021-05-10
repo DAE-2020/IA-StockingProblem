@@ -5,6 +5,10 @@ import experiments.Experiment;
 import experiments.ExperimentEvent;
 import ga.GeneticAlgorithm;
 import ga.geneticoperators.*;
+import ga.geneticoperators.mutation.Mutation;
+import ga.geneticoperators.mutation.Mutation3;
+import ga.geneticoperators.mutation.MutationInversion;
+import ga.geneticoperators.mutation.MutationInsert;
 import ga.selectionmethods.*;
 
 import java.awt.*;
@@ -14,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -31,6 +36,7 @@ import utils.Recombinations;
 
 public class MainFrame extends JFrame implements AlgorithmListener {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     public static final int PANEL_SIZE = 250;
     private StockingProblem warehouse;
@@ -58,7 +64,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         }
     }
 
-    private void jbInit() throws Exception {
+    private void jbInit() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("IA Project");
 
@@ -173,30 +179,25 @@ public class MainFrame extends JFrame implements AlgorithmListener {
             seriesBestIndividual.clear();
             seriesAverage.clear();
             switch (panelParameters.getAlgorithm()) {
-                case 0:
-                    algorithm = new GeneticAlgorithm<StockingProblemIndividual, StockingProblem>(
+                case 0 -> {
+                    algorithm = new GeneticAlgorithm<>(
                             Integer.parseInt(panelParameters.jTextFieldN.getText()),
                             Integer.parseInt(panelParameters.jTextFieldGenerations.getText()),
                             panelParameters.getSelectionMethod(),
                             panelParameters.getRecombinationMethod(),
                             panelParameters.getMutationMethod(),
                             new Random(Integer.parseInt(panelParameters.jTextFieldSeed.getText())));
-
                     System.out.println(algorithm);
-                    break;
-
-                case 1:
-                    algorithm = new RandomAlgorithm<StockingProblemIndividual, StockingProblem>(
-                            Integer.parseInt(panelParameters.jTextFieldGenerations.getText()),
-                            new Random(Integer.parseInt(panelParameters.jTextFieldSeed.getText())));
-                    break;
-
+                }
+                case 1 -> algorithm = new RandomAlgorithm<>(
+                        Integer.parseInt(panelParameters.jTextFieldGenerations.getText()),
+                        new Random(Integer.parseInt(panelParameters.jTextFieldSeed.getText())));
             }
             algorithm.addListener(this);
 
             manageButtons(false, false, true, false, false);
 
-            worker = new SwingWorker<Void, Void>() {
+            worker = new SwingWorker<>() {
                 @Override
                 public Void doInBackground() {
                     try {
@@ -224,7 +225,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
 
     @Override
     public void iterationEnded(AlgorithmEvent e) {
-        Algorithm<StockingProblemIndividual, StockingProblem> source = e.getSource();
+        Algorithm source = e.getSource();
         bestIndividualPanel.textArea.setText(source.getGlobalBest().toString());
         seriesBestIndividual.add(source.getIteration(), source.getGlobalBest().getFitness());
         if (source instanceof GeneticAlgorithm)
@@ -265,7 +266,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         manageButtons(false, false, false, false, false);
         textFieldExperimentsStatus.setText("Running");
 
-        worker = new SwingWorker<Void, Void>() {
+        worker = new SwingWorker<>() {
             @Override
             public Void doInBackground() {
                 try {
@@ -448,15 +449,19 @@ class PanelParameters extends PanelAtributesValue {
     JTextField jTextFieldN = new JTextField(POPULATION_SIZE, TEXT_FIELD_LENGHT);
     JTextField jTextFieldGenerations = new JTextField(GENERATIONS, TEXT_FIELD_LENGHT);
     String[] selectionMethods = {"Tournament", "Roulette wheel"};
+    @SuppressWarnings("unchecked")
     JComboBox jComboBoxSelectionMethods = new JComboBox(selectionMethods);
     JTextField jTextFieldTournamentSize = new JTextField(TOURNAMENT_SIZE, TEXT_FIELD_LENGHT);
     String[] recombinationMethods = {Recombinations.PMX.getText(), Recombinations.RECOMBINATION_2.getText(), Recombinations.RECOMBINATION_3.getText()};
+    @SuppressWarnings("unchecked")
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
-    String[] mutationMethods = {Mutations.INSERT.getText(), Mutations.GAUSSIAN_SELF_ADAPTIVE.getText(), Mutations.MUTATION_3.getText()};
+    String[] mutationMethods = {Mutations.INSERT.getText(), Mutations.INVERSION.getText(), Mutations.MUTATION_3.getText()};
+    @SuppressWarnings("unchecked")
     JComboBox jComboBoxMutationMethods = new JComboBox(mutationMethods);
     JTextField jTextFieldProbMutation = new JTextField(PROB_MUTATION, TEXT_FIELD_LENGHT);
     String[] algorithms = {"GA", "Random"};
+    @SuppressWarnings("unchecked")
     JComboBox jComboBoxAlgorithms = new JComboBox(algorithms);
 
     public PanelParameters() {
@@ -505,16 +510,14 @@ class PanelParameters extends PanelAtributesValue {
     }
 
     public SelectionMethod<StockingProblemIndividual, StockingProblem> getSelectionMethod() {
-        switch (jComboBoxSelectionMethods.getSelectedIndex()) {
-            case 0:
-                return new Tournament<>(
-                        Integer.parseInt(jTextFieldN.getText()),
-                        Integer.parseInt(jTextFieldTournamentSize.getText()));
-            case 1:
-                return new RouletteWheel<>(
-                        Integer.parseInt(jTextFieldN.getText()));
-        }
-        return null;
+        return switch (jComboBoxSelectionMethods.getSelectedIndex()) {
+            case 0 -> new Tournament<>(
+                    Integer.parseInt(jTextFieldN.getText()),
+                    Integer.parseInt(jTextFieldTournamentSize.getText()));
+            case 1 -> new RouletteWheel<>(
+                    Integer.parseInt(jTextFieldN.getText()));
+            default -> null;
+        };
     }
 
     public int getAlgorithm() {
@@ -525,15 +528,12 @@ class PanelParameters extends PanelAtributesValue {
 
         double recombinationProb = Double.parseDouble(jTextFieldProbRecombination.getText());
 
-        switch (jComboBoxRecombinationMethods.getSelectedIndex()) {
-            case 0:
-                return new RecombinationPartialMapped<>(recombinationProb);
-            case 1:
-                return new Recombination2<>(recombinationProb);
-            case 2:
-                return new Recombination3<>(recombinationProb);
-        }
-        return null;
+        return switch (jComboBoxRecombinationMethods.getSelectedIndex()) {
+            case 0 -> new RecombinationPartialMapped<>(recombinationProb);
+            case 1 -> new Recombination2<>(recombinationProb);
+            case 2 -> new Recombination3<>(recombinationProb);
+            default -> null;
+        };
     }
 
 
@@ -541,15 +541,12 @@ class PanelParameters extends PanelAtributesValue {
 
         double mutationProb = Double.parseDouble(jTextFieldProbMutation.getText());
 
-        switch (jComboBoxMutationMethods.getSelectedIndex()) {
-            case 0:
-                return new MutationInsert<>(mutationProb);
-            case 1:
-                return new MutationGaussianSelfAdaptive<>(mutationProb);
-            case 2:
-                return new Mutation3<>(mutationProb);
-        }
-        return null;
+        return switch (jComboBoxMutationMethods.getSelectedIndex()) {
+            case 0 -> new MutationInsert<>(mutationProb);
+            case 1 -> new MutationInversion<>(mutationProb);
+            case 2 -> new Mutation3<>(mutationProb);
+            default -> null;
+        };
     }
 }
 
