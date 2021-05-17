@@ -4,9 +4,9 @@ import algorithms.IntVectorIndividual;
 import algorithms.Problem;
 import utils.Recombinations;
 
-public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
+public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
-    public Recombination2(double probability) {
+    public CompleteSubtourExangeCrossover(double probability) {
         super(probability);
     }
 
@@ -18,6 +18,6 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
 
     @Override
     public String toString() {
-        return Recombinations.RECOMBINATION_2.getText();
+        return Recombinations.CSEX.getText();
     }
 }
