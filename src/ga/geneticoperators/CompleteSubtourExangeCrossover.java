@@ -18,23 +18,27 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
     public void recombine(I ind1, I ind2) {
         List<List<Integer>> subtour1 = findCommonSubtours(ind1.getGenome(), ind2.getGenome());
         List<List<Integer>> subtour2 = findCommonSubtours(ind2.getGenome(), ind1.getGenome());
-        Individual[] offsprings = generateOffsprings(ind1, ind2, subtour1, subtour2);
+        List<I> offsprings = generateOffsprings(ind1, ind2, subtour1, subtour2);
+        for (int i = 0; i < ind1.getNumGenes(); i++) {
+            ind1.setGene(i, offsprings.get(0).getGene(i));
+            ind2.setGene(i, offsprings.get(1).getGene(i));
+        }
     }
 
-    private List<List<Integer>> findCommonSubtours(int[] p1, int[] p2) {
+    private List<List<Integer>> findCommonSubtours(Integer[] p1, Integer[] p2) {
         List<Integer> usedItems = new ArrayList<>();
         List<List<Integer>> subtours = new ArrayList<>();
         for (int i = 0; i < p1.length; i++) {
             for (int j = 0; j < p2.length; j++) {
                 if (usedItems.contains(p1[i])) break;
-                if(p1[i] == p2[j]){
+                if(p1[i].equals(p2[j])){
                     int l = 0;
                     List<Integer> subtour = new ArrayList<>();
                     if (usedItems.contains(p1[i])) break;
                     do {
                         subtour.add(p1[i + l]);
                         l++;
-                    } while (i + l < p1.length && j + l < p2.length && p1[i + l] == p2[j + l]);
+                    } while (i + l < p1.length && j + l < p2.length && p1[i + l].equals(p2[j + l]));
                     if (subtour.size() > 1) {
                         subtours.add(subtour);
                         usedItems.addAll(subtour);
@@ -46,7 +50,7 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
                     do {
                         subtour.add(p1[i - l]);
                         l++;
-                    } while (i - l > -1 && j + l < p2.length && p1[i - l] == p2[j + l]);
+                    } while (i - l > -1 && j + l < p2.length && p1[i - l].equals(p2[j + l]));
                     if (subtour.size() > 1) {
                         subtours.add(subtour);
                         usedItems.addAll(subtour);
@@ -58,7 +62,7 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
                     do {
                         subtour.add(p1[i + l]);
                         l++;
-                    } while (i + l < p2.length - 1 && j - l > - 1 && p1[i + l] == p2[j - l]);
+                    } while (i + l < p2.length - 1 && j - l > - 1 && p1[i + l].equals(p2[j - l]));
                     if (subtour.size() > 1) {
                         subtours.add(subtour);
                         usedItems.addAll(subtour);
@@ -70,7 +74,7 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
                     do {
                         subtour.add(p1[i - l]);
                         l++;
-                    } while (i - l > -1 && j - l > - 1 && p2[j - l] == p1[i - l]);
+                    } while (i - l > -1 && j - l > - 1 && p2[j - l].equals(p1[i - l]));
                     if (subtour.size() > 1) {
                         subtours.add(subtour);
                         usedItems.addAll(subtour);
@@ -82,14 +86,47 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
         return subtours;
     }
 
-    private Individual[] generateOffsprings(I p1, I p2, List<List<Integer>> subtours1, List<List<Integer>> subtours2) {
-        int[][] offsprings = new int[(int) (Math.pow(2, subtours1.size())-1)][p1.getNumGenes()];
-        killWorseOffsprings(new Individual[0]);
-        return new Individual[0];
+    private List<I> generateOffsprings(I p1, I p2, List<List<Integer>> subtours1, List<List<Integer>> subtours2) {
+        int numOffsprings = (int) Math.pow(2, subtours1.size()+1)-2;
+        int numGenes = p1.getNumGenes();
+        List<I> offsprings = new ArrayList<>();
+        for (int offspring = 0; offspring < numOffsprings; offspring++) {
+            I parent;
+            List<List<Integer>> subtours;
+            if (offspring < numOffsprings / 2) {
+                parent = p1;
+                subtours = subtours1;
+            } else {
+                parent = p2;
+                subtours = subtours2;
+            }
+            offsprings.set(offspring, parent);
+            for (int subtour = 0; subtour < subtours.size(); subtour++) {
+                if ((subtour + 1) % Math.pow(2, subtour) == 0) {
+                    int startIndex = offsprings.get(offspring).genomeIndexOf(subtours.get(subtour));
+                    if (startIndex != -1) {
+                        offsprings.get(offspring).invertGenes(startIndex, startIndex+subtours.get(subtour).size());
+                    }
+                }
+            }
+        }
+        return killWorseOffsprings(offsprings, 2);
     }
 
-    private void killWorseOffsprings(Individual[] individuals) {
-
+    private List<I> killWorseOffsprings(List<I> offsprings, int numSurvivors) {
+        List<I> survivors = new ArrayList<>();
+        for (int i = 0; i < numSurvivors; i++) {
+            I best = offsprings.get(0);
+            for (I individual : offsprings) {
+                individual.computeFitness();
+                if(individual.compareTo(best) > 0) {
+                    best = individual;
+                }
+            }
+            survivors.add(best);
+            offsprings.remove(best);
+        }
+        return survivors;
     }
 
 

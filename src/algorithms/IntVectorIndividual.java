@@ -5,16 +5,16 @@ import java.util.ArrayList;
 public abstract class IntVectorIndividual<P extends Problem, I extends IntVectorIndividual> extends Individual<P, I> {
     //TODO this class might require the definition of additional methods and/or attributes
 
-    protected int[] genome;
+    protected Integer[] genome;
 
     public IntVectorIndividual(P problem, int size) {
         super(problem);
-        genome = new int[size];
+        genome = new Integer[size];
       }
 
     public IntVectorIndividual(IntVectorIndividual<P, I> original) {
         super(original);
-        this.genome = new int[original.genome.length];
+        this.genome = new Integer[original.genome.length];
         System.arraycopy(original.genome, 0, genome, 0, genome.length);
     }
 
@@ -39,7 +39,7 @@ public abstract class IntVectorIndividual<P extends Problem, I extends IntVector
         return values;
     }
 
-    public int getGene(int index) {
+    public Integer getGene(int index) {
         return genome[index];
     }
 
@@ -54,6 +54,7 @@ public abstract class IntVectorIndividual<P extends Problem, I extends IntVector
         other.genome[index] = aux;
     }
 
+    @Override
     public void invertGenes(int start, int end) {
         int length = (end - start) + 1;
         int middle = Math.floorDiv(length, 2);
@@ -65,13 +66,14 @@ public abstract class IntVectorIndividual<P extends Problem, I extends IntVector
         }
     }
 
+
     public void switchGenes(int firstIndex, int secondIndex) {
         int aux = genome[firstIndex];
         genome[firstIndex] = genome[secondIndex];
         genome[secondIndex] = aux;
     }
 
-    public int[] getGenome() {
+    public Integer[] getGenome() {
         return genome;
     }
 }
