@@ -103,7 +103,7 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
             offsprings.set(offspring, parent);
             for (int subtour = 0; subtour < subtours.size(); subtour++) {
                 if ((subtour + 1) % Math.pow(2, subtour) == 0) {
-                    int startIndex = offsprings.get(offspring).genomeIndexOf(subtours.get(subtour));
+                    int startIndex = offsprings.get(offspring).genomeIndexOf(subtours.get(subtour).get(0));
                     if (startIndex != -1) {
                         offsprings.get(offspring).invertGenes(startIndex, startIndex+subtours.get(subtour).size());
                     }
