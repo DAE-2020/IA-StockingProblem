@@ -87,30 +87,31 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
     }
 
     private List<I> generateOffsprings(I p1, I p2, List<List<Integer>> subtours1, List<List<Integer>> subtours2) {
-        int numOffsprings = (int) Math.pow(2, subtours1.size()+1)-2;
-        int numGenes = p1.getNumGenes();
         List<I> offsprings = new ArrayList<>();
-        for (int offspring = 0; offspring < numOffsprings; offspring++) {
-            I parent;
-            List<List<Integer>> subtours;
-            if (offspring < numOffsprings / 2) {
-                parent = p1;
-                subtours = subtours1;
-            } else {
-                parent = p2;
-                subtours = subtours2;
+        exchangeSubtours(offsprings, p1, subtours1);
+        exchangeSubtours(offsprings, p2, subtours2);
+        return killWorseOffsprings(offsprings, 2);
+    }
+
+    private void exchangeSubtours(List<I> offsprings, I parent, List<List<Integer>> subtours) {
+        int numOffsprings = (int) Math.pow(2, subtours.size()+1)-2;
+        for (int offspring = 0; offspring < numOffsprings / 2; offspring++) {
+            if (offspring != 0) {
+                parent = offsprings.get((offsprings.size() - 1) - 1);
             }
-            offsprings.set(offspring, parent);
+            offsprings.add(parent);
             for (int subtour = 0; subtour < subtours.size(); subtour++) {
-                if ((subtour + 1) % Math.pow(2, subtour) == 0) {
-                    int startIndex = offsprings.get(offspring).genomeIndexOf(subtours.get(subtour).get(0));
-                    if (startIndex != -1) {
-                        offsprings.get(offspring).invertGenes(startIndex, startIndex+subtours.get(subtour).size());
+                if (offspring % Math.pow(2, subtour) == 0) {
+                    int startIndex = offsprings.get(offspring)
+                            .genomeIndexOf(subtours.get(subtour).get(0));
+                    int endIndex = offsprings.get(offsprings.size() - 1)
+                            .genomeIndexOf(subtours.get(subtour).get(subtours.get(subtour).size() - 1));
+                    if (startIndex != -1 && endIndex != -1) {
+                        offsprings.get(offsprings.size() - 1).invertGenes(startIndex, endIndex);
                     }
                 }
             }
         }
-        return killWorseOffsprings(offsprings, 2);
     }
 
     private List<I> killWorseOffsprings(List<I> offsprings, int numSurvivors) {
@@ -128,7 +129,6 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
         }
         return survivors;
     }
-
 
     @Override
     public String toString() {
