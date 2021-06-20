@@ -29,9 +29,41 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
     @Override
     public double computeFitness() {
-        //TODO
+        int worstCaseColumns = 0;
 
-        throw new UnsupportedOperationException("Not implemented yet.");
+        for (Item item : this.problem.getItems()) {
+            worstCaseColumns += item.getColumns();
+        }
+
+        int coordCount = this.problem.getMaterialHeight() * worstCaseColumns;
+        int[][] matrix = new int[this.problem.getMaterialHeight()][worstCaseColumns];
+
+        for (int i = 0; i < this.getGenome().length; i++) {
+            for (Item item : this.problem.getItems()) {
+                if (item.getId() == i) {
+                    for (int j = 0; j < item.getLines(); j++) {
+                        for (int k = 0; k < item.getColumns(); k++) {
+                            if (checkValidPlacement(item, matrix, j, k)) {
+                                matrix[j][k] = item.getMatrix()[j][k];
+                                this.problem.setMaterialMaxWidth(j + k);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        double fitness = coordCount;
+
+        for (int i = 0; i < this.problem.getMaterialHeight(); i++) {
+            for (int j = 0; j < this.problem.getMaterialMaxWidth(); j++) {
+                if (matrix[i][j] == 0) {
+                    fitness--;
+                }
+            }
+        }
+
+        return fitness;
     }
 
     private boolean checkValidPlacement(Item item, int[][] material, int lineIndex, int columnIndex) {
