@@ -54,7 +54,7 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
 
         switch (Recombinations.getByText(getParameterValue("Recombination"))) {
             case PMX -> recombination = new RecombinationPartialMapped<>(recombinationProbability);
-            case RECOMBINATION_2 -> recombination = new Recombination2<>(recombinationProbability);
+            case CSEX -> recombination = new CompleteSubtourExangeCrossover<>(recombinationProbability);
             case RECOMBINATION_3 -> recombination = new Recombination3<>(recombinationProbability);
         }
 
