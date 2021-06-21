@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public class StockingProblem implements Problem<StockingProblemIndividual> {
     private int materialHeight;
     private ArrayList<Item> items;
+    private int materialMaxWidth;
     //TODO this class might require the definition of additional methods and/or attributes
 
     public StockingProblem(int materialHeight, ArrayList<Item> items) {
         this.materialHeight = materialHeight;
         this.items = items;
+        this.materialMaxWidth = 0;
         //TODO this construtor might require additional code
     }
 
@@ -28,6 +30,14 @@ public class StockingProblem implements Problem<StockingProblemIndividual> {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public int getMaterialMaxWidth() {
+        return materialMaxWidth;
+    }
+
+    public void setMaterialMaxWidth(int materialMaxWidth) {
+        this.materialMaxWidth = materialMaxWidth;
     }
 
     @Override
