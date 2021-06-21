@@ -35,17 +35,22 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             worstCaseColumns += item.getColumns();
         }
 
-        int coordCount = this.problem.getMaterialHeight() * worstCaseColumns;
         int[][] matrix = new int[this.problem.getMaterialHeight()][worstCaseColumns];
 
         for (int i = 0; i < this.getGenome().length; i++) {
             for (Item item : this.problem.getItems()) {
                 if (item.getId() == i) {
-                    for (int j = 0; j < item.getLines(); j++) {
-                        for (int k = 0; k < item.getColumns(); k++) {
-                            if (checkValidPlacement(item, matrix, j, k)) {
-                                matrix[j][k] = item.getMatrix()[j][k];
-                                this.problem.setMaterialMaxWidth(j + k);
+                    search:
+                    for (int j = 0; j < worstCaseColumns; j++) {
+                        for (int k = 0; k < this.problem.getMaterialHeight(); k++) {
+                            if (checkValidPlacement(item, matrix, k, j)) {
+                                for (int l = 0; l < item.getLines(); l++) {
+                                    for (int m = 0; m < item.getColumns(); m++) {
+                                        matrix[k + l][j + m] = item.getMatrix()[l][m];
+                                        this.problem.setMaterialMaxWidth(k + m);
+                                    }
+                                }
+                                break search;
                             }
                         }
                     }
@@ -53,7 +58,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             }
         }
 
-        double fitness = coordCount;
+        double fitness = this.problem.getMaterialHeight() * this.problem.getMaterialMaxWidth();
 
         for (int i = 0; i < this.problem.getMaterialHeight(); i++) {
             for (int j = 0; j < this.problem.getMaterialMaxWidth(); j++) {
