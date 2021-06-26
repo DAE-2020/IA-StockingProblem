@@ -24,7 +24,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     public StockingProblemIndividual(StockingProblemIndividual original) {
         super(original);
         //TODO
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
