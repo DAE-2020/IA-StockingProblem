@@ -18,10 +18,12 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
     public void recombine(I ind1, I ind2) {
         List<List<Integer>> subtour1 = findCommonSubtours(ind1.getGenome(), ind2.getGenome());
         List<List<Integer>> subtour2 = findCommonSubtours(ind2.getGenome(), ind1.getGenome());
-        List<I> offsprings = generateOffsprings(ind1, ind2, subtour1, subtour2);
-        for (int i = 0; i < ind1.getNumGenes(); i++) {
-            ind1.setGene(i, offsprings.get(0).getGene(i));
-            ind2.setGene(i, offsprings.get(1).getGene(i));
+        if (subtour1.size() > 0 && subtour2.size() > 0) {
+            List<I> offsprings = generateOffsprings(ind1, ind2, subtour1, subtour2);
+            for (int i = 0; i < ind1.getNumGenes(); i++) {
+                ind1.setGene(i, offsprings.get(0).getGene(i));
+                ind2.setGene(i, offsprings.get(1).getGene(i));
+            }
         }
     }
 
@@ -97,7 +99,7 @@ public class CompleteSubtourExangeCrossover<I extends IntVectorIndividual, P ext
         int numOffsprings = (int) Math.pow(2, subtours.size()+1)-2;
         for (int offspring = 0; offspring < numOffsprings / 2; offspring++) {
             if (offspring != 0) {
-                parent = offsprings.get((offsprings.size() - 1) - 1);
+                parent = offsprings.get((offsprings.size() - 1));
             }
             offsprings.add(parent);
             for (int subtour = 0; subtour < subtours.size(); subtour++) {
