@@ -452,7 +452,7 @@ class PanelParameters extends PanelAtributesValue {
     @SuppressWarnings("unchecked")
     JComboBox jComboBoxSelectionMethods = new JComboBox(selectionMethods);
     JTextField jTextFieldTournamentSize = new JTextField(TOURNAMENT_SIZE, TEXT_FIELD_LENGHT);
-    String[] recombinationMethods = {Recombinations.PMX.getText(), Recombinations.CSEX.getText(), Recombinations.RECOMBINATION_3.getText()};
+    String[] recombinationMethods = {Recombinations.PMX.getText(), Recombinations.CSEX.getText(), Recombinations.RECOMBINATION_OX2.getText()};
     @SuppressWarnings("unchecked")
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
@@ -531,7 +531,7 @@ class PanelParameters extends PanelAtributesValue {
         return switch (jComboBoxRecombinationMethods.getSelectedIndex()) {
             case 0 -> new RecombinationPartialMapped<>(recombinationProb);
             case 1 -> new CompleteSubtourExangeCrossover<>(recombinationProb);
-            case 2 -> new Recombination3<>(recombinationProb);
+            case 2 -> new RecombinationOX2<>(recombinationProb);
             default -> null;
         };
     }

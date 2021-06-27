@@ -3,7 +3,7 @@ package utils;
 public enum Recombinations {
     PMX("PMX"),
     CSEX("CSEX"),
-    RECOMBINATION_3("Recombination 3");
+    RECOMBINATION_OX2("Recombination OX2");
 
     private final String text;
 
