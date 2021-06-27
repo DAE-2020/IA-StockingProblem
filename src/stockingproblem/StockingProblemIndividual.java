@@ -6,10 +6,13 @@ import ga.GeneticAlgorithm;
 import java.util.ArrayList;
 
 public class StockingProblemIndividual extends IntVectorIndividual<StockingProblem, StockingProblemIndividual> {
-    //TODO this class might require the definition of additional methods and/or attributes
+
+    private int materialMaxWidth;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         super(problem, size);
+
+        this.materialMaxWidth = 0;
         ArrayList<Integer> aux = new ArrayList<>();
         for (int i = 1; i <= size; i++) {
             aux.add(i);
@@ -23,8 +26,8 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
         super(original);
-        //TODO
-        //throw new UnsupportedOperationException("Not implemented yet.");
+
+        this.materialMaxWidth = 0;
     }
 
     @Override
@@ -37,9 +40,11 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
         int[][] matrix = new int[this.problem.getMaterialHeight()][worstCaseColumns];
 
-        for (int i = 0; i < this.getGenome().length; i++) {
+        Integer[] genome = this.getGenome();
+
+        for (Integer gene : genome) {
             for (Item item : this.problem.getItems()) {
-                if (item.getId() == i) {
+                if (item.getId() == gene) {
                     search:
                     for (int j = 0; j < worstCaseColumns; j++) {
                         for (int k = 0; k < this.problem.getMaterialHeight(); k++) {
@@ -47,9 +52,10 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                                 for (int l = 0; l < item.getLines(); l++) {
                                     for (int m = 0; m < item.getColumns(); m++) {
                                         matrix[k + l][j + m] = item.getMatrix()[l][m];
-                                        this.problem.setMaterialMaxWidth(k + m);
                                     }
                                 }
+                                if (j + item.getColumns() > this.materialMaxWidth)
+                                    this.setMaterialMaxWidth(j + item.getColumns());
                                 break search;
                             }
                         }
@@ -58,11 +64,11 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             }
         }
 
-        double fitness = this.problem.getMaterialHeight() * this.problem.getMaterialMaxWidth();
+        fitness = this.problem.getMaterialHeight() * this.materialMaxWidth;
 
         for (int i = 0; i < this.problem.getMaterialHeight(); i++) {
-            for (int j = 0; j < this.problem.getMaterialMaxWidth(); j++) {
-                if (matrix[i][j] == 0) {
+            for (int j = 0; j < this.materialMaxWidth; j++) {
+                if (matrix[i][j] != 0) {
                     fitness--;
                 }
             }
@@ -87,12 +93,26 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         return true;
     }
 
+    public int getMaterialMaxWidth() {
+        return materialMaxWidth;
+    }
+
+    public void setMaterialMaxWidth(int materialMaxWidth) {
+        this.materialMaxWidth = materialMaxWidth;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("fitness: ");
+        sb.append("[ ");
+        for (int gene :
+                getGenome()) {
+            sb.append(gene);
+            sb.append(" ");
+        }
+        sb.append("]\nfitness: ");
         sb.append(fitness);
-        //TODO
+        sb.append("\n");
         return sb.toString();
     }
 
